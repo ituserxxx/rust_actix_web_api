@@ -5,14 +5,12 @@ use serde::Deserialize;
 
 
 // curl -X GET -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/
-#[get("/")]
-async fn hello() -> impl Responder {
+pub async fn hello() -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
 }
 
 // curl -X POST -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/echo
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
+pub async fn echo(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
 }
 
@@ -23,12 +21,11 @@ struct MyObj2 {
 }
 
 // curl -X DELETE -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/del/888
-#[delete("/del/{id}")]
-async fn del(id: web::Path<i64>) -> Result<impl Responder> {
-        let obj = MyObj2 {
-                id: *id,
-            };
-            Ok(web::Json(obj))
+pub async fn del(id: web::Path<i64>) -> Result<impl Responder> {
+    let obj = MyObj2 {
+        id: *id,
+    };
+    Ok(web::Json(obj))
 }
 
 #[derive(Deserialize,Serialize)]
@@ -38,9 +35,7 @@ struct Info {
 
 
 // curl -X PATCH -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/patch
-#[patch("/patch")]
-async fn patch(a: web::Json<Info>) ->  Result<impl Responder>  {
-//     Ok(format!("Welcome {}!", info.username))
+pub async fn patch(a: web::Json<Info>) ->  Result<impl Responder>  {
      Ok(web::Json(a))
 }
 
@@ -50,8 +45,7 @@ struct MyObj {
 }
 
 // curl -X GET -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/aaa/xxx1
-#[get("/aaa/{name}")]
-async fn aaa(name: web::Path<String>) -> Result<impl Responder> {
+pub async fn aaa(name: web::Path<String>) -> Result<impl Responder> {
     let obj = MyObj {
         name: name.to_string(),
     };
@@ -60,9 +54,8 @@ async fn aaa(name: web::Path<String>) -> Result<impl Responder> {
 
 
 // curl -X GET -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"username":"yuiyui"}' http://127.0.0.1:8877/info
-
-#[get("/info")]
-async fn info(info: web::Json<Info>) ->  Result<impl Responder>  {
-//     Ok(format!("Welcome {}!", info.username))
+pub async fn info(info: web::Json<Info>) ->  Result<impl Responder>  {
      Ok(web::Json(info))
 }
+
+
