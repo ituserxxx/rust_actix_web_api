@@ -1164,6 +1164,7 @@ dependencies = [
  "actix-web",
  "actix-web-lab",
  "futures",
+ "futures-util",
  "jsonwebtoken",
  "md-5",
  "serde",

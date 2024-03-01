@@ -10,7 +10,7 @@ pub async fn hello() -> impl Responder {
 }
 
 // curl -X POST -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/echo
-pub async fn echo(req_body: String) -> impl Responder {
+pub async fn post_t(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
 }
 
@@ -21,31 +21,31 @@ struct MyObj2 {
 }
 
 // curl -X DELETE -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/del/888
-pub async fn del(id: web::Path<i64>) -> Result<impl Responder> {
+pub async fn del_t(id: web::Path<i64>) -> Result<impl Responder> {
     let obj = MyObj2 {
         id: *id,
     };
     Ok(web::Json(obj))
 }
 
-#[derive(Deserialize,Serialize)]
-struct Info {
+#[derive(Debug,Deserialize,Serialize)]
+pub struct Info {
     username: String,
 }
 
 
 // curl -X PATCH -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/patch
-pub async fn patch(a: web::Json<Info>) ->  Result<impl Responder>  {
+pub async fn patch_t(a: web::Json<Info>) ->  Result<impl Responder>  {
      Ok(web::Json(a))
 }
 
-#[derive(Serialize)]
+#[derive(Debug,Serialize)]
 struct MyObj {
     name: String,
 }
 
 // curl -X GET -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"id":1111}' http://127.0.0.1:8877/aaa/xxx1
-pub async fn aaa(name: web::Path<String>) -> Result<impl Responder> {
+pub async fn get_t(name: web::Path<String>) -> Result<impl Responder> {
     let obj = MyObj {
         name: name.to_string(),
     };
@@ -53,9 +53,12 @@ pub async fn aaa(name: web::Path<String>) -> Result<impl Responder> {
 }
 
 
-// curl -X GET -H "Content-Type: application/json" -H "Authorization: xxxxxxxxx" -d '{"username":"yuiyui"}' http://127.0.0.1:8877/info
+// curl -X POST -H "Content-Type: application/json" -H "Authorization: valid_token1" -d '{"username":"yuiyui"}' http://127.0.0.1:8877/info
 pub async fn info(info: web::Json<Info>) ->  Result<impl Responder>  {
+     println!("controller-fn=info par={:?}", info);
      Ok(web::Json(info))
 }
 
-
+//
+// curl -X GET http://127.0.0.1:8899/
+// curl -X POST http://127.0.0.1:8899/user
